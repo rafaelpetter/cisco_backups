@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2141 bytes
+Current configuration : 2122 bytes
 !
 ! Last configuration change at 12:33:58 UTC Sun May 30 2021 by admin
 !
@@ -146,6 +146,5 @@ line aux 0
 line vty 0 4
  transport input ssh
 !
-ntp server 1.1.1.1
 !
 end
