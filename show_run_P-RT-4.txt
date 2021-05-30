@@ -1,0 +1,150 @@
+Building configuration...
+
+Current configuration : 2122 bytes
+!
+! Last configuration change at 10:56:57 UTC Sun May 30 2021 by admin
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R-RT-4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+!
+!
+!
+!
+!
+aaa session-id common
+ip cef
+!
+ip vrf INTERNET
+ rd 100:200
+ route-target export 100:200
+ route-target import 100:200
+!
+!
+!
+!
+!
+!
+ip domain name rafapetter.com
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 0 cisco
+!
+!
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback200
+ ip address 40.40.40.40 255.255.255.255
+ ip ospf 1 area 0
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet1/0
+ ip address 172.16.0.4 255.255.255.0
+ duplex full
+!
+interface Ethernet1/1
+ description MPLS
+ ip address 100.2.4.2 255.255.255.252
+ ip ospf 1 area 0
+ duplex full
+ mpls ip
+!
+interface Ethernet1/2
+ description MPLS
+ ip address 100.4.6.1 255.255.255.252
+ ip ospf 1 area 0
+ duplex full
+ mpls ip
+!
+interface Ethernet1/3
+ description INTERNET-ISP-AS10
+ ip vrf forwarding INTERNET
+ ip address 200.4.7.1 255.255.255.252
+ duplex full
+!
+router ospf 1
+ router-id 40.40.40.40
+!
+router bgp 100
+ bgp router-id 40.40.40.40
+ bgp log-neighbor-changes
+ neighbor 10.10.10.10 remote-as 100
+ neighbor 10.10.10.10 update-source Loopback200
+ neighbor 60.60.60.60 remote-as 100
+ neighbor 60.60.60.60 update-source Loopback200
+ !
+ address-family vpnv4
+  neighbor 10.10.10.10 activate
+  neighbor 10.10.10.10 send-community extended
+  neighbor 60.60.60.60 activate
+  neighbor 60.60.60.60 send-community extended
+ exit-address-family
+ !
+ address-family ipv4 vrf INTERNET
+  neighbor 200.4.7.2 remote-as 10
+  neighbor 200.4.7.2 activate
+  neighbor 200.4.7.2 soft-reconfiguration inbound
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+route-map SET-LP-400 permit 10
+ set local-preference 400
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ transport input ssh
+!
+!
+end
