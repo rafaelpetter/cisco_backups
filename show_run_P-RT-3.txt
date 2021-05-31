@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 2004 bytes
+Current configuration : 1985 bytes
 !
-! Last configuration change at 23:01:17 UTC Sun May 30 2021 by admin
+! Last configuration change at 23:03:15 UTC Sun May 30 2021 by admin
 !
 version 15.2
 service timestamps debug datetime msec
@@ -141,6 +141,5 @@ line aux 0
 line vty 0 4
  transport input ssh
 !
-ntp server 1.1.1.1
 !
 end
