@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 2122 bytes
+Current configuration : 2317 bytes
 !
-! Last configuration change at 23:25:36 UTC Sun May 30 2021 by admin
+! Last configuration change at 02:13:40 UTC Mon May 31 2021 by admin
 !
 version 15.2
 service timestamps debug datetime msec
@@ -97,6 +97,7 @@ interface Ethernet1/3
  description INTERNET-ISP-AS10
  ip vrf forwarding INTERNET
  ip address 200.4.7.1 255.255.255.252
+ load-interval 30
  duplex full
 !
 router ospf 1
@@ -132,6 +133,15 @@ no ip http secure-server
 !
 route-map SET-LP-400 permit 10
  set local-preference 400
+!
+route-map SET-LP-200 permit 10
+ set local-preference 200
+!
+route-map SET-LP-300 permit 10
+ set local-preference 300
+!
+route-map SET-LP-100 permit 10
+ set local-preference 100
 !
 !
 !

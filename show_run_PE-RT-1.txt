@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 2737 bytes
+Current configuration : 2973 bytes
 !
-! Last configuration change at 18:34:55 UTC Sat May 29 2021 by admin
+! Last configuration change at 19:15:56 UTC Sat May 29 2021 by admin
 !
 version 15.2
 service timestamps debug datetime msec
@@ -148,6 +148,18 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
+!
+route-map SET-LP-400 permit 10
+ set local-preference 400
+!
+route-map SET-LP-200 permit 10
+ set local-preference 200
+!
+route-map SET-LP-300 permit 10
+ set local-preference 300
+!
+route-map SET-LP-100 permit 10
+ set local-preference 100
 !
 !
 !
