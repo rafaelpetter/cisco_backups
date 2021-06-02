@@ -1,19 +1,19 @@
 Building configuration...
 
-Current configuration : 1667 bytes
+Current configuration : 1874 bytes
 !
-! Last configuration change at 08:29:22 UTC Mon May 31 2021 by admin
-!
-version 15.2
+upgrade fpd auto
+version 12.4
 service timestamps debug datetime msec
 service timestamps log datetime msec
+no service password-encryption
 !
 hostname MGMT-RT
 !
 boot-start-marker
 boot-end-marker
 !
-!
+logging message-counter syslog
 enable password cisco
 !
 aaa new-model
@@ -22,20 +22,15 @@ aaa new-model
 aaa authentication login default local
 !
 !
-!
-!
-!
 aaa session-id common
+ip source-route
 ip cef
-!
-!
 !
 !
 !
 !
 ip domain name rafapetter.com
 no ipv6 cef
-!
 !
 multilink bundle-name authenticated
 !
@@ -45,18 +40,25 @@ multilink bundle-name authenticated
 !
 !
 !
+!
+!
+!
+!
+!
+!
+!
+!
+!
 username admin privilege 15 secret 5 $1$8GI0$HbKIY6RC1HrLSCCok.12Z.
-!
-!
-ip ssh version 2
+archive
+ log config
+  hidekeys
 ! 
 !
 !
 !
 !
-!
-!
-!
+ip ssh version 2
 !
 !
 !
@@ -64,16 +66,20 @@ ip ssh version 2
 interface Tunnel0
  ip address 20.20.20.2 255.255.255.252
  ip nat inside
+ ip virtual-reassembly
  tunnel source FastEthernet0/0
  tunnel destination 13.54.116.157
 !
 interface FastEthernet0/0
  ip address dhcp
+ ip ospf 1 area 0
  duplex full
 !
 interface Ethernet2/0
  ip address 172.16.0.254 255.255.255.0
  ip nat outside
+ ip virtual-reassembly
+ ip ospf 1 area 0
  duplex full
 !
 interface Ethernet2/1
@@ -91,18 +97,24 @@ interface Ethernet2/3
  shutdown
  duplex full
 !
-ip nat inside source list 1 interface Ethernet2/0 overload
+router ospf 1
+ log-adjacency-changes
+!
 ip forward-protocol nd
-!
-!
 no ip http server
 no ip http secure-server
+!
+!
+ip nat inside source list 1 interface Ethernet2/0 overload
 !
 ip sla 1
  icmp-echo 20.20.20.1 source-interface Tunnel0
  frequency 5
 ip sla schedule 1 life forever start-time now
 access-list 1 permit 20.20.20.1
+!
+!
+!
 !
 route-map SET-LP-400 permit 10
  set local-preference 400
@@ -118,8 +130,16 @@ route-map SET-LP-100 permit 10
 !
 !
 !
-!
 control-plane
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
 !
 !
 line con 0
@@ -128,6 +148,5 @@ line aux 0
  stopbits 1
 line vty 0 4
  transport input ssh
-!
 !
 end
