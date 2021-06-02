@@ -1,19 +1,19 @@
 Building configuration...
 
-Current configuration : 2221 bytes
+Current configuration : 2388 bytes
 !
-! Last configuration change at 17:25:49 UTC Mon May 31 2021 by admin
-!
-version 15.2
+upgrade fpd auto
+version 12.4
 service timestamps debug datetime msec
 service timestamps log datetime msec
+no service password-encryption
 !
 hostname P-RT-5
 !
 boot-start-marker
 boot-end-marker
 !
-!
+logging message-counter syslog
 enable password cisco
 !
 aaa new-model
@@ -22,11 +22,10 @@ aaa new-model
 aaa authentication login default local
 !
 !
-!
-!
-!
 aaa session-id common
+ip source-route
 ip cef
+!
 !
 ip vrf INTERNET
  rd 100:200
@@ -35,12 +34,8 @@ ip vrf INTERNET
 !
 !
 !
-!
-!
-!
 ip domain name rafapetter.com
 no ipv6 cef
-!
 !
 multilink bundle-name authenticated
 !
@@ -50,18 +45,25 @@ multilink bundle-name authenticated
 !
 !
 !
+!
+!
+!
+!
+!
+!
+!
+!
+!
 username admin privilege 15 password 0 cisco
-!
-!
-ip ssh version 2
+archive
+ log config
+  hidekeys
 ! 
 !
 !
 !
 !
-!
-!
-!
+ip ssh version 2
 !
 !
 !
@@ -100,14 +102,17 @@ interface Ethernet1/3
 !
 router ospf 1
  router-id 50.50.50.50
+ log-adjacency-changes
 !
 router bgp 100
+ no synchronization
  bgp router-id 50.50.50.50
  bgp log-neighbor-changes
  neighbor 10.10.10.10 remote-as 100
  neighbor 10.10.10.10 update-source Loopback200
  neighbor 60.60.60.60 remote-as 100
  neighbor 60.60.60.60 update-source Loopback200
+ no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
@@ -119,13 +124,17 @@ router bgp 100
  address-family ipv4 vrf INTERNET
   neighbor 200.5.11.2 remote-as 50
   neighbor 200.5.11.2 activate
+  no synchronization
  exit-address-family
 !
 ip forward-protocol nd
-!
-!
 no ip http server
 no ip http secure-server
+!
+!
+!
+!
+!
 !
 !
 route-map SET-LP-400 permit 10
@@ -142,8 +151,16 @@ route-map SET-LP-100 permit 10
 !
 !
 !
-!
 control-plane
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
 !
 !
 line con 0
@@ -152,6 +169,5 @@ line aux 0
  stopbits 1
 line vty 0 4
  transport input ssh
-!
 !
 end
