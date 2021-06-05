@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1874 bytes
+Current configuration : 2229 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -27,6 +27,17 @@ ip source-route
 ip cef
 !
 !
+ip dhcp excluded-address 172.16.0.254
+ip dhcp excluded-address 172.16.0.1
+ip dhcp excluded-address 172.16.0.2
+ip dhcp excluded-address 172.16.0.3
+ip dhcp excluded-address 172.16.0.4
+ip dhcp excluded-address 172.16.0.5
+ip dhcp excluded-address 172.16.0.6
+!
+ip dhcp pool MPLS-ROUTERS-POOL
+   network 172.16.0.0 255.255.255.0
+   default-router 172.16.0.254 
 !
 !
 ip domain name rafapetter.com
