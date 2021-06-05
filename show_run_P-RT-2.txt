@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2416 bytes
+Current configuration : 2426 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -96,7 +96,7 @@ interface Ethernet1/2
  duplex full
 !
 interface Ethernet1/3
- description INTERNET-ISP-AS10
+ description INTERNET-ISP: TO RT 7 AS 10
  ip vrf forwarding INTERNET
  ip address 200.2.7.1 255.255.255.252
  duplex full
