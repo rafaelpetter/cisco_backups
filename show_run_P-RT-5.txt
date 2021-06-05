@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2481 bytes
+Current configuration : 2527 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -126,6 +126,7 @@ router bgp 100
   neighbor 200.5.11.2 remote-as 50
   neighbor 200.5.11.2 activate
   neighbor 200.5.11.2 soft-reconfiguration inbound
+  neighbor 200.5.11.2 route-map SET-LP-400 in
   no synchronization
  exit-address-family
 !
