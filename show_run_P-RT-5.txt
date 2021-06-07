@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2421 bytes
+Current configuration : 2477 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -84,6 +84,7 @@ interface Ethernet1/0
 interface Ethernet1/1
  description MPLS
  ip address 100.3.5.2 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -91,6 +92,7 @@ interface Ethernet1/1
 interface Ethernet1/2
  description MPLS
  ip address 100.5.6.1 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
