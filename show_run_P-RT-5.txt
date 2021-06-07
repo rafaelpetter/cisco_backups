@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2477 bytes
+Current configuration : 2539 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -142,6 +142,9 @@ no ip http secure-server
 !
 route-map SET-LP-400 permit 10
  set local-preference 400
+!
+route-map SET-LP-MW-MODE permit 10
+ set local-preference 10
 !
 route-map SET-LP-200 permit 10
  set local-preference 200
