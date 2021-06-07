@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2481 bytes
+Current configuration : 2421 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -109,17 +109,16 @@ router bgp 100
  no synchronization
  bgp router-id 50.50.50.50
  bgp log-neighbor-changes
- neighbor 10.10.10.10 remote-as 100
- neighbor 10.10.10.10 update-source Loopback200
- neighbor 60.60.60.60 remote-as 100
- neighbor 60.60.60.60 update-source Loopback200
+ neighbor MPLS-VPNV4 peer-group
+ neighbor MPLS-VPNV4 remote-as 100
+ neighbor MPLS-VPNV4 update-source Loopback200
+ neighbor 10.10.10.10 peer-group MPLS-VPNV4
+ neighbor 60.60.60.60 peer-group MPLS-VPNV4
  no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
-  neighbor 10.10.10.10 send-community extended
   neighbor 60.60.60.60 activate
-  neighbor 60.60.60.60 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf INTERNET

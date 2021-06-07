@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 3188 bytes
+Current configuration : 2915 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -112,29 +112,23 @@ router ospf 1
 router bgp 100
  no synchronization
  bgp log-neighbor-changes
- neighbor 10.10.10.10 remote-as 100
- neighbor 10.10.10.10 update-source Loopback200
- neighbor 20.20.20.20 remote-as 100
- neighbor 20.20.20.20 update-source Loopback200
- neighbor 30.30.30.30 remote-as 100
- neighbor 30.30.30.30 update-source Loopback200
- neighbor 40.40.40.40 remote-as 100
- neighbor 40.40.40.40 update-source Loopback200
- neighbor 50.50.50.50 remote-as 100
+ neighbor MPLS-VPNV4 peer-group
+ neighbor MPLS-VPNV4 remote-as 100
+ neighbor MPLS-VPNV4 update-source Loopback200
+ neighbor 10.10.10.10 peer-group MPLS-VPNV4
+ neighbor 20.20.20.20 peer-group MPLS-VPNV4
+ neighbor 30.30.30.30 peer-group MPLS-VPNV4
+ neighbor 40.40.40.40 peer-group MPLS-VPNV4
+ neighbor 50.50.50.50 peer-group MPLS-VPNV4
  neighbor 50.50.50.50 update-source Loopback200
  no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
-  neighbor 10.10.10.10 send-community extended
   neighbor 20.20.20.20 activate
-  neighbor 20.20.20.20 send-community extended
   neighbor 30.30.30.30 activate
-  neighbor 30.30.30.30 send-community extended
   neighbor 40.40.40.40 activate
-  neighbor 40.40.40.40 send-community extended
   neighbor 50.50.50.50 activate
-  neighbor 50.50.50.50 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf MPLS-CUSTOMER
