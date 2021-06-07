@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2366 bytes
+Current configuration : 2385 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -170,4 +170,5 @@ line aux 0
 line vty 0 4
  transport input ssh
 !
+ntp server 1.1.1.1
 end
