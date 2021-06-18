@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 3684 bytes
+Current configuration : 3249 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -27,17 +27,6 @@ ip source-route
 ip cef
 !
 !
-ip dhcp excluded-address 172.16.0.254
-ip dhcp excluded-address 172.16.0.1
-ip dhcp excluded-address 172.16.0.2
-ip dhcp excluded-address 172.16.0.3
-ip dhcp excluded-address 172.16.0.4
-ip dhcp excluded-address 172.16.0.5
-ip dhcp excluded-address 172.16.0.6
-!
-ip dhcp pool MPLS-ROUTERS-POOL
-   network 172.16.0.0 255.255.255.0
-   default-router 172.16.0.254 
 !
 !
 ip domain name rafapetter.com
@@ -66,8 +55,8 @@ archive
   hidekeys
 ! 
 crypto keyring keyring-vpn-019deddcb232f12da-0 
-  local-address 192.168.1.104
-  pre-shared-key address 52.50.205.239 key VudF5T2rnHqy1SifUP5oEo5XMdP4_Xds
+  local-address FastEthernet0/0
+  pre-shared-key address 54.76.25.41 key VudF5T2rnHqy1SifUP5oEo5XMdP4_Xds
 !
 crypto isakmp policy 200
  encr aes
@@ -76,8 +65,8 @@ crypto isakmp policy 200
  lifetime 28800
 crypto isakmp profile isakmp-vpn-019deddcb232f12da-0
    keyring keyring-vpn-019deddcb232f12da-0
-   match identity address 52.50.205.239 255.255.255.255 
-   local-address 192.168.1.104
+   match identity address 54.76.25.41 255.255.255.255 
+   local-address FastEthernet0/0
 !
 crypto ipsec security-association replay window-size 128
 !
@@ -110,14 +99,13 @@ interface Tunnel1
  ip address 169.254.143.38 255.255.255.252
  ip virtual-reassembly
  ip tcp adjust-mss 1379
- tunnel source 192.168.1.104
- tunnel destination 52.50.205.239
+ tunnel source FastEthernet0/0
+ tunnel destination 54.76.25.41
  tunnel mode ipsec ipv4
  tunnel protection ipsec profile ipsec-vpn-019deddcb232f12da-0
 !
 interface FastEthernet0/0
  ip address dhcp
- ip ospf 1 area 0
  duplex full
 !
 interface Ethernet2/0
@@ -176,9 +164,6 @@ access-list 1 permit 20.20.20.1
 !
 route-map SET-LP-400 permit 10
  set local-preference 400
-!
-route-map SET-LP-MW-MODE permit 10
- set local-preference 10
 !
 route-map SET-LP-200 permit 10
  set local-preference 200

@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2646 bytes
+Current configuration : 2420 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -97,10 +97,8 @@ interface Ethernet1/2
  mpls ip
 !
 interface Ethernet1/3
- description INTERNET-ISP: TO RT 11 AS 50
  ip vrf forwarding INTERNET
  ip address 200.3.11.1 255.255.255.252
- load-interval 30
  duplex full
 !
 router ospf 1
@@ -111,24 +109,21 @@ router bgp 100
  no synchronization
  bgp router-id 30.30.30.30
  bgp log-neighbor-changes
- neighbor MPLS-VPNV4 peer-group
- neighbor MPLS-VPNV4 remote-as 100
- neighbor MPLS-VPNV4 update-source Loopback200
- neighbor 10.10.10.10 peer-group MPLS-VPNV4
- neighbor 60.60.60.60 peer-group MPLS-VPNV4
+ neighbor 10.10.10.10 remote-as 100
+ neighbor 10.10.10.10 update-source Loopback200
+ neighbor 60.60.60.60 remote-as 100
+ neighbor 60.60.60.60 update-source Loopback200
  no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
+  neighbor 10.10.10.10 send-community extended
   neighbor 60.60.60.60 activate
+  neighbor 60.60.60.60 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf INTERNET
-  neighbor INTERNET peer-group
-  neighbor INTERNET remote-as 50
-  neighbor INTERNET soft-reconfiguration inbound
-  neighbor INTERNET route-map SET-LP-100 in
-  neighbor 200.3.11.2 peer-group INTERNET
+  neighbor 200.3.11.2 remote-as 50
   neighbor 200.3.11.2 activate
   no synchronization
  exit-address-family
@@ -145,9 +140,6 @@ no ip http secure-server
 !
 route-map SET-LP-400 permit 10
  set local-preference 400
-!
-route-map SET-LP-MW-MODE permit 10
- set local-preference 10
 !
 route-map SET-LP-200 permit 10
  set local-preference 200
