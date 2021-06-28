@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2420 bytes
+Current configuration : 2532 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -85,6 +85,7 @@ interface Ethernet1/0
 interface Ethernet1/1
  description MPLS
  ip address 100.1.3.2 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -92,6 +93,7 @@ interface Ethernet1/1
 interface Ethernet1/2
  description MPLS
  ip address 100.3.5.1 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -109,21 +111,23 @@ router bgp 100
  no synchronization
  bgp router-id 30.30.30.30
  bgp log-neighbor-changes
- neighbor 10.10.10.10 remote-as 100
- neighbor 10.10.10.10 update-source Loopback200
- neighbor 60.60.60.60 remote-as 100
- neighbor 60.60.60.60 update-source Loopback200
+ neighbor MPLS-VPNV4 peer-group
+ neighbor MPLS-VPNV4 remote-as 100
+ neighbor MPLS-VPNV4 update-source Loopback200
+ neighbor MPLS-VPNV4 send-community extended
+ neighbor 10.10.10.10 peer-group MPLS-VPNV4
+ neighbor 60.60.60.60 peer-group MPLS-VPNV4
  no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
-  neighbor 10.10.10.10 send-community extended
   neighbor 60.60.60.60 activate
-  neighbor 60.60.60.60 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf INTERNET
-  neighbor 200.3.11.2 remote-as 50
+  neighbor INTERNET peer-group
+  neighbor INTERNET remote-as 50
+  neighbor 200.3.11.2 peer-group INTERNET
   neighbor 200.3.11.2 activate
   no synchronization
  exit-address-family

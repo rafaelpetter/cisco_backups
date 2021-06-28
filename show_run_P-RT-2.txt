@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2416 bytes
+Current configuration : 2681 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -79,6 +79,7 @@ interface FastEthernet0/0
 interface Ethernet1/0
  description MPLS
  ip address 100.1.2.2 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -86,6 +87,7 @@ interface Ethernet1/0
 interface Ethernet1/1
  description MPLS
  ip address 100.2.4.1 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -93,12 +95,13 @@ interface Ethernet1/1
 interface Ethernet1/2
  description INTERNET-ISP-AS10
  ip vrf forwarding INTERNET
- ip address 200.2.7.1 255.255.255.252
+ no ip address
  duplex full
 !
 interface Ethernet1/3
- no ip address
- shutdown
+ description INTERNET-ISP: TO RT 7 AS 10
+ ip vrf forwarding INTERNET
+ ip address 200.2.7.1 255.255.255.252
  duplex full
 !
 router ospf 1
@@ -109,21 +112,25 @@ router bgp 100
  no synchronization
  bgp router-id 20.20.20.20
  bgp log-neighbor-changes
- neighbor 10.10.10.10 remote-as 100
- neighbor 10.10.10.10 update-source Loopback200
- neighbor 60.60.60.60 remote-as 100
- neighbor 60.60.60.60 update-source Loopback200
+ neighbor MPLS-VPNV4 peer-group
+ neighbor MPLS-VPNV4 remote-as 100
+ neighbor MPLS-VPNV4 update-source Loopback200
+ neighbor MPLS-VPNV4 send-community extended
+ neighbor MPLS-VPNV4 soft-reconfiguration inbound
+ neighbor 10.10.10.10 peer-group MPLS-VPNV4
+ neighbor 60.60.60.60 peer-group MPLS-VPNV4
  no auto-summary
  !
  address-family vpnv4
   neighbor 10.10.10.10 activate
-  neighbor 10.10.10.10 send-community extended
   neighbor 60.60.60.60 activate
-  neighbor 60.60.60.60 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf INTERNET
-  neighbor 200.2.7.2 remote-as 10
+  neighbor INTERNET peer-group
+  neighbor INTERNET remote-as 10
+  neighbor INTERNET route-map SET-LP-100 in
+  neighbor 200.2.7.2 peer-group INTERNET
   neighbor 200.2.7.2 activate
   no synchronization
  exit-address-family

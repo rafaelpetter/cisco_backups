@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 3249 bytes
+Current configuration : 1856 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -54,28 +54,6 @@ archive
  log config
   hidekeys
 ! 
-crypto keyring keyring-vpn-019deddcb232f12da-0 
-  local-address FastEthernet0/0
-  pre-shared-key address 54.76.25.41 key VudF5T2rnHqy1SifUP5oEo5XMdP4_Xds
-!
-crypto isakmp policy 200
- encr aes
- authentication pre-share
- group 2
- lifetime 28800
-crypto isakmp profile isakmp-vpn-019deddcb232f12da-0
-   keyring keyring-vpn-019deddcb232f12da-0
-   match identity address 54.76.25.41 255.255.255.255 
-   local-address FastEthernet0/0
-!
-crypto ipsec security-association replay window-size 128
-!
-crypto ipsec transform-set ipsec-prop-vpn-019deddcb232f12da-0 esp-aes esp-sha-hmac 
-crypto ipsec df-bit clear
-!
-crypto ipsec profile ipsec-vpn-019deddcb232f12da-0
- set transform-set ipsec-prop-vpn-019deddcb232f12da-0 
- set pfs group2
 !
 !
 !
@@ -85,9 +63,6 @@ ip ssh version 2
 !
 !
 !
-interface Loopback200
- ip address 200.200.200.1 255.255.255.252
-!
 interface Tunnel0
  ip address 20.20.20.2 255.255.255.252
  ip nat inside
@@ -95,24 +70,15 @@ interface Tunnel0
  tunnel source FastEthernet0/0
  tunnel destination 13.54.116.157
 !
-interface Tunnel1
- ip address 169.254.143.38 255.255.255.252
- ip virtual-reassembly
- ip tcp adjust-mss 1379
- tunnel source FastEthernet0/0
- tunnel destination 54.76.25.41
- tunnel mode ipsec ipv4
- tunnel protection ipsec profile ipsec-vpn-019deddcb232f12da-0
-!
 interface FastEthernet0/0
  ip address dhcp
+ ip ospf 1 area 0
  duplex full
 !
 interface Ethernet2/0
  ip address 172.16.0.254 255.255.255.0
  ip nat outside
  ip virtual-reassembly
- ip ospf 1 area 0
  duplex full
 !
 interface Ethernet2/1
@@ -132,19 +98,6 @@ interface Ethernet2/3
 !
 router ospf 1
  log-adjacency-changes
-!
-router bgp 65000
- bgp log-neighbor-changes
- neighbor 169.254.143.37 remote-as 64512
- neighbor 169.254.143.37 timers 10 30 30
- !
- address-family ipv4
-  neighbor 169.254.143.37 activate
-  neighbor 169.254.143.37 soft-reconfiguration inbound
-  no auto-summary
-  no synchronization
-  network 200.200.200.0 mask 255.255.255.252
- exit-address-family
 !
 ip forward-protocol nd
 no ip http server
