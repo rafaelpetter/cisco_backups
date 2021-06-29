@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2499 bytes
+Current configuration : 2541 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -98,6 +98,7 @@ interface Ethernet1/2
  mpls ip
 !
 interface Ethernet1/3
+ description INTERNET-ISP: TO RT 11 AS 50
  ip vrf forwarding INTERNET
  ip address 200.5.11.1 255.255.255.252
  duplex full

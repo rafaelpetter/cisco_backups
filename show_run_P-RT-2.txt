@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2681 bytes
+Current configuration : 2632 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -93,9 +93,8 @@ interface Ethernet1/1
  mpls ip
 !
 interface Ethernet1/2
- description INTERNET-ISP-AS10
- ip vrf forwarding INTERNET
  no ip address
+ shutdown
  duplex full
 !
 interface Ethernet1/3
