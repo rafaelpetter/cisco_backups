@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2996 bytes
+Current configuration : 3070 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -90,6 +90,7 @@ interface Ethernet1/0
 interface Ethernet1/1
  description MPLS
  ip address 100.1.2.1 255.255.255.252
+ ip ospf prefix-suppression
  ip ospf 1 area 0
  duplex full
  mpls ip
@@ -126,6 +127,7 @@ router bgp 100
  no auto-summary
  !
  address-family vpnv4
+  neighbor MPLS-VPNV4 send-community extended
   neighbor 20.20.20.20 activate
   neighbor 30.30.30.30 activate
   neighbor 40.40.40.40 activate
