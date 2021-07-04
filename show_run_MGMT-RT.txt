@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1856 bytes
+Current configuration : 1535 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -30,6 +30,7 @@ ip cef
 !
 !
 ip domain name rafapetter.com
+ip name-server 192.168.1.1
 no ipv6 cef
 !
 multilink bundle-name authenticated
@@ -68,11 +69,10 @@ interface Tunnel0
  ip nat inside
  ip virtual-reassembly
  tunnel source FastEthernet0/0
- tunnel destination 13.54.116.157
+ tunnel destination 192.168.1.104
 !
 interface FastEthernet0/0
- ip address dhcp
- ip ospf 1 area 0
+ ip address 192.168.1.116 255.255.255.0
  duplex full
 !
 interface Ethernet2/0
@@ -96,36 +96,18 @@ interface Ethernet2/3
  shutdown
  duplex full
 !
-router ospf 1
- log-adjacency-changes
-!
 ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
 no ip http server
 no ip http secure-server
 !
 !
 ip nat inside source list 1 interface Ethernet2/0 overload
 !
-ip sla 1
- icmp-echo 20.20.20.1 source-interface Tunnel0
- frequency 5
-ip sla schedule 1 life forever start-time now
 access-list 1 permit 20.20.20.1
 !
 !
 !
-!
-route-map SET-LP-400 permit 10
- set local-preference 400
-!
-route-map SET-LP-200 permit 10
- set local-preference 200
-!
-route-map SET-LP-300 permit 10
- set local-preference 300
-!
-route-map SET-LP-100 permit 10
- set local-preference 100
 !
 !
 !
