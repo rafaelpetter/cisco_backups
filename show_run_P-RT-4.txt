@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 2600 bytes
+Current configuration : 2646 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -121,6 +121,7 @@ router bgp 100
  no auto-summary
  !
  address-family vpnv4
+  neighbor MPLS-VPNV4 send-community extended
   neighbor 10.10.10.10 activate
   neighbor 60.60.60.60 activate
  exit-address-family
