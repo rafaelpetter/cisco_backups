@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 3142 bytes
+Current configuration : 3079 bytes
 !
 upgrade fpd auto
 version 12.4
@@ -150,10 +150,6 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
-ip flow-top-talkers
- top 5
- sort-by packets
- cache-timeout 500
 !
 !
 !
